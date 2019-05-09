@@ -131,7 +131,7 @@ def scale_vector(vector,size=1):
     if(A == 0):
         return [0,0,0]
     return [vector[0]/(A/size), vector[1]/(A/size), vector[2]/(A/size)]
-
+'''
 def all_scale_vector(vectors,size=1):
     A = all_vector_length(vectors)
     scaled_vectors = []
@@ -141,6 +141,10 @@ def all_scale_vector(vectors,size=1):
         else:
             scaled_vectors.append(vectors[i]/(A[i]/size))
     return scaled_vectors
+'''
+def all_scale_vector(vectors,size=1):
+    norm = np.linalg.norm(vectors,axis=1)
+    return vectors/np.expand_dims(np.where(norm>0,norm,1),axis=1)
 
 def init_data():
    data = []  
@@ -152,26 +156,27 @@ def init_data():
    data.append(pos_z)
    return data
 
-def new_drone(data):
-   data[0].append([])
-   data[1].append([])
-   data[2].append([])
-   return data
+def new_drone(data,size):
+    for i in range(size):
+        data[0].append([])
+        data[1].append([])
+        data[2].append([])
+    return data
 
-def add_data(data,drone,index):
-   position = drone.cur_pos()
-   pos_x = position[0]
-   pos_y = position[1]
-   pos_z = position[2]
-   data[0][index].append(pos_x)
-   data[1][index].append(pos_y)
-   data[2][index].append(pos_z)
-   return data
+def add_data(data,position):
+    for i in range(len(position)):
+        pos_x = position[i][0]
+        pos_y = position[i][1]
+        pos_z = position[i][2]
+        data[0][i].append(pos_x)
+        data[1][i].append(pos_y)
+        data[2][i].append(pos_z)
+    return data
 
-def export_csv(data,drones,filename):
+def export_csv(data,size,filename):
     data=np.array(data)
     df = DataFrame()
-    for i in range(drones):
+    for i in range(size):
         df['d_' + str(i) + '_xpos'] = data[0][i]
         df['d_' + str(i) + '_ypos'] = data[1][i]
         df['d_' + str(i) + '_zpos'] = data[2][i]
