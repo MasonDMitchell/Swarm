@@ -3,6 +3,7 @@ from include import *
 from scipy import spatial
 import pickle
 import datetime
+import os
 #Everything standard to m/s
 
 class Swarm:
@@ -104,7 +105,7 @@ class Swarm:
         return [self.separate,self.alignment,self.cohesion]
 
     #Weights is [proximity,separation,alignment,cohesion]
-    def simulate(self,time,timestep,weight):
+    def simulate(self,path,time,timestep,weight):
         total_data = []
         total_pos = []
         total_can_see = []
@@ -116,8 +117,8 @@ class Swarm:
             total_pos.append(self.position)
             total_can_see.append(self.can_see)
         x = datetime.datetime.now()
-        tot_time = x.strftime("%m")+"_"+x.strftime("%d")+"_"+x.strftime("%X")
-        total_data.append(total_pos)
+        tot_time = x.strftime("%m")+"_"+x.strftime("%d")+"_"+x.strftime("%X")+":"+x.strftime("%f")
+        tot_time = tot_time.replace(':','-')
         total_data.append(total_can_see)
         total_data.append(weight)
-        pickle.dump(total_data,open('data/'+tot_time+'.p','wb'))
+        pickle.dump(total_data,open(path+'/'+tot_time+'.p','wb'))
