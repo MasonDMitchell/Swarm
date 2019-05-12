@@ -11,4 +11,4 @@ mpl.rc('grid',color='#6d6d6d')
 mpl.rc('legend',frameon=False)
 
 x = Swarm(400)
-x.simulate('./data/',3,.1,[3,.9,1.5,.7])
+x.simulate('./data/',10,.1,[3,.9,1.5,.7],True)

@@ -9,8 +9,8 @@ import os
 class Swarm:
     def __init__(self,size):
         self.size = size
-        self.position = np.random.rand(size,3)*-5
-        self.velocity = np.random.rand(size,3)*.2
+        self.position = (np.random.rand(size,3)*20)-10
+        self.velocity = np.random.rand(size,3)
 
         self.can_see = [[]]*size
 
@@ -105,7 +105,7 @@ class Swarm:
         return [self.separate,self.alignment,self.cohesion]
 
     #Weights is [proximity,separation,alignment,cohesion]
-    def simulate(self,path,time,timestep,weight):
+    def simulate(self,path,time,timestep,weight,vis=False):
         total_data = []
         total_pos = []
         total_can_see = []
@@ -119,6 +119,11 @@ class Swarm:
         x = datetime.datetime.now()
         tot_time = x.strftime("%m")+"_"+x.strftime("%d")+"_"+x.strftime("%X")+":"+x.strftime("%f")
         tot_time = tot_time.replace(':','-')
+        if(vis == True):
+            total_data.append(total_pos)
         total_data.append(total_can_see)
         total_data.append(weight)
-        pickle.dump(total_data,open(path+'/'+tot_time+'.p','wb'))
+        if(vis == True):
+            pickle.dump(total_data,open('data/data.p','wb'))
+        else:
+            pickle.dump(total_data,open(path+'/'+tot_time+'.p','wb'))
